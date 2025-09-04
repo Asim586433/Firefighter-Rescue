@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firefighter Rescue</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Genome Guardian: Firefighter DNA Optimization</title>
     <style>
         * {
             margin: 0;
@@ -14,703 +13,811 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: white;
             min-height: 100vh;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
         }
         
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
         }
         
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
             margin-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
         
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            color: #FF9800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .game-area {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
-        }
-        
-        #game-container {
-            position: relative;
-            width: 100%;
-            height: 600px;
-            background: #2c3e50;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-        
-        #game-canvas {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .game-ui {
+        .game-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         
-        .score-container {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+        @media (min-width: 768px) {
+            .game-container {
+                flex-direction: row;
+            }
         }
         
-        .score {
-            font-size: 32px;
+        .game-board {
+            flex: 2;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .game-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .dna-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .controls-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 10px;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+        
+        .cell {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: #2a4b5b;
+        }
+        
+        .cell.building {
+            background: #7e8a96;
+        }
+        
+        .cell.fire {
+            background: linear-gradient(45deg, #ff4500, #ff7f00);
+            box-shadow: 0 0 15px #ff4500, 0 0 30px #ff7f00;
+            animation: fireAnimation 1.5s infinite alternate;
+        }
+        
+        @keyframes fireAnimation {
+            from { box-shadow: 0 0 10px #ff4500, 0 0 20px #ff7f00; }
+            to { box-shadow: 0 0 20px #ff4500, 0 0 40px #ff7f00; }
+        }
+        
+        .cell.water {
+            background: linear-gradient(45deg, #1e90ff, #00bfff);
+            box-shadow: 0 0 15px #1e90ff, 0 0 30px #00bfff;
+        }
+        
+        .firefighter {
+            width: 70%;
+            height: 70%;
+            background: #ff4d4d;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.8);
+            position: relative;
+        }
+        
+        .firefighter::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 15px;
+            background: #3366cc;
+            border-radius: 50%;
+        }
+        
+        .dna-visualization {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .dna-base {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
-            color: #FF9800;
-            margin-top: 5px;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dna-base.correct {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         
         .stats {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
         }
         
         .stat {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .upgrades {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        .upgrade-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255, 152, 0, 0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .upgrade-item:hover {
-            background: rgba(255, 152, 0, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background: #3498db;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-        
-        #mobile-controls {
-            display: none;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .mobile-btn {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            user-select: none;
-        }
-        
-        #tutorial-modal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            z-index: 100;
-            width: 80%;
-            max-width: 600px;
             text-align: center;
         }
         
-        #tutorial-modal h2 {
-            color: #FF9800;
-            margin-bottom: 20px;
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4ecdc4;
         }
         
-        #tutorial-modal p {
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .tool-btn {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            grid-column: span 3;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .game-status {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            min-height: 30px;
+        }
+        
+        .success {
+            color: #4ecdc4;
+        }
+        
+        .danger {
+            color: #ff6b6b;
+        }
+        
+        .tutorial {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tutorial h2 {
             margin-bottom: 15px;
-            line-height: 1.6;
+            color: #4ecdc4;
         }
         
-        .fire-icon {
-            display: inline-block;
-            width: 20px;
-            height: 30px;
-            background: radial-gradient(ellipse at bottom, #ff5722, #ff9800, transparent 70%);
+        .tutorial-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
-            animation: fire 1s infinite;
-            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
         }
         
-        @keyframes fire {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.9rem;
         }
         
-        @media (max-width: 900px) {
-            .game-area {
-                grid-template-columns: 1fr;
-            }
-            
-            #game-container {
-                height: 400px;
-            }
+        .water-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(30, 144, 255, 0.7), rgba(0, 191, 255, 0.7));
+            border-radius: 8px;
+            animation: waterSpray 0.5s ease-out;
         }
         
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            #mobile-controls {
-                display: flex;
-            }
+        @keyframes waterSpray {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(1); }
+        }
+        
+        .fire-smoke {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.3) 10%, transparent 70%);
+            border-radius: 8px;
+            animation: smoke 2s infinite alternate;
+        }
+        
+        @keyframes smoke {
+            0% { opacity: 0.3; transform: translateY(0) scale(1); }
+            100% { opacity: 0.7; transform: translateY(-20px) scale(1.2); }
+        }
+        
+        .dna-connection {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            z-index: -1;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">
-                <i class="fas fa-fire"></i>
-                FIREFIGHTER RESCUE
-            </div>
-            <nav>
-                <button class="btn btn-secondary" id="help-btn">Help</button>
-                <button class="btn btn-secondary" id="sound-btn">Sound: On</button>
-            </nav>
+            <h1>Genome Guardian</h1>
+            <p class="subtitle">Fight fires and optimize the DNA sequence to save the city!</p>
         </header>
         
-        <div class="game-area">
-            <div id="game-container">
-                <canvas id="game-canvas"></canvas>
-                
-                <div id="tutorial-modal">
-                    <h2>How to Play</h2>
-                    <p>Your mission is to put out fires and save the city!</p>
-                    <p>• Use arrow keys or swipe to move the firefighter</p>
-                    <p>• Spray water on fires to extinguish them</p>
-                    <p>• Collect power-ups to enhance your abilities</p>
-                    <p>• Upgrade your hose to increase water pressure</p>
-                    <p>• Stop the fire from spreading to other buildings</p>
-                    <br>
-                    <button class="btn btn-primary" id="tutorial-close">Got It!</button>
+        <div class="game-container">
+            <div class="game-board">
+                <div class="grid" id="gameGrid">
+                    <!-- Grid will be generated by JavaScript -->
                 </div>
-            </div>
-            
-            <div class="game-ui">
-                <div class="score-container">
-                    <h3>SCORE</h3>
-                    <div class="score" id="score">0</div>
+                
+                <div class="game-status" id="gameStatus">
+                    Welcome to Genome Guardian! Select a tool and extinguish fires.
                 </div>
                 
                 <div class="stats">
-                    <h3>STATS</h3>
                     <div class="stat">
-                        <span>Fires Extinguished:</span>
-                        <span id="extinguished">0</span>
+                        <div class="stat-value" id="scoreValue">0</div>
+                        <div class="stat-label">Score</div>
                     </div>
                     <div class="stat">
-                        <span>Buildings Saved:</span>
-                        <span id="saved">0</span>
+                        <div class="stat-value" id="waterValue">100</div>
+                        <div class="stat-label">Water</div>
                     </div>
                     <div class="stat">
-                        <span>Hose Power:</span>
-                        <span id="hose-power">1.0x</span>
+                        <div class="stat-value" id="dnaProgress">0%</div>
+                        <div class="stat-label">DNA Optimized</div>
                     </div>
-                    <div class="stat">
-                        <span>Water Capacity:</span>
-                        <span id="water-cap">100%</span>
+                </div>
+            </div>
+            
+            <div class="game-info">
+                <div class="dna-panel">
+                    <h2>DNA Sequence Optimization</h2>
+                    <p>Extinguish fires to optimize the DNA sequence:</p>
+                    
+                    <div class="dna-visualization" id="dnaSequence">
+                        <!-- DNA bases will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="dna-visualization" id="dnaStatus">
+                        <!-- DNA status will be generated by JavaScript -->
                     </div>
                 </div>
                 
-                <div class="upgrades">
-                    <h3>UPGRADES</h3>
-                    <div class="upgrade-item" data-upgrade="hose">
-                        <div>
-                            <i class="fas fa-fire-extinguisher"></i>
-                            Hose Power
-                        </div>
-                        <div>100 pts</div>
+                <div class="controls-panel">
+                    <h2>Firefighting Tools</h2>
+                    <p>Select a tool to fight fires:</p>
+                    
+                    <div class="controls">
+                        <button class="tool-btn" data-tool="small">Small Hose<br>(5 water)</button>
+                        <button class="tool-btn" data-tool="medium">Medium Hose<br>(10 water)</button>
+                        <button class="tool-btn" data-tool="large">Large Hose<br>(15 water)</button>
+                        <button class="tool-btn" data-tool="sprinkler">Place Sprinkler<br>(20 water)</button>
+                        <button class="tool-btn" data-tool="optimize">DNA Optimize<br>(30 water)</button>
+                        <button class="action-btn" id="extinguishBtn">Extinguish Fire</button>
                     </div>
-                    <div class="upgrade-item" data-upgrade="capacity">
-                        <div>
-                            <i class="fas fa-tint"></i>
-                            Water Capacity
-                        </div>
-                        <div>150 pts</div>
-                    </div>
-                    <div class="upgrade-item" data-upgrade="speed">
-                        <div>
-                            <i class="fas fa-running"></i>
-                            Movement Speed
-                        </div>
-                        <div>120 pts</div>
-                    </div>
-                </div>
-                
-                <div class="controls">
-                    <button class="btn btn-primary" id="start-btn">Start Game</button>
-                    <button class="btn btn-secondary" id="pause-btn">Pause</button>
                 </div>
             </div>
         </div>
         
-        <div id="mobile-controls">
-            <div class="mobile-btn" id="left-btn">←</div>
-            <div class="mobile-btn" id="up-btn">↑</div>
-            <div class="mobile-btn" id="down-btn">↓</div>
-            <div class="mobile-btn" id="right-btn">→</div>
-            <div class="mobile-btn" id="water-btn">💧</div>
+        <div class="tutorial">
+            <h2>How to Play</h2>
+            <div class="tutorial-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Select a firefighting tool from the options</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Click on a burning building to extinguish the fire</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Each successful action optimizes part of the DNA sequence</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <p>Manage your water supply wisely - it replenishes slowly</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <p>Fully optimize the DNA sequence to win the game!</p>
+                </div>
+            </div>
         </div>
+        
+        <footer>
+            <p>Genome Guardian - A Firefighter DNA Optimization Game | Created with HTML, CSS, and JavaScript</p>
+        </footer>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Game variables
-            const canvas = document.getElementById('game-canvas');
-            const ctx = canvas.getContext('2d');
-            const scoreElement = document.getElementById('score');
-            const tutorialModal = document.getElementById('tutorial-modal');
-            const startBtn = document.getElementById('start-btn');
-            const pauseBtn = document.getElementById('pause-btn');
-            const helpBtn = document.getElementById('help-btn');
-            const soundBtn = document.getElementById('sound-btn');
-            const tutorialClose = document.getElementById('tutorial-close');
-            
-            // Dummy data for game state
-            let gameState = {
+            // Game state
+            const gameState = {
+                grid: [],
+                firefighterPosition: { row: 2, col: 2 },
+                selectedTool: 'medium',
                 score: 0,
-                active: false,
-                paused: false,
-                firesExtinguished: 0,
-                buildingsSaved: 0,
-                hosePower: 1.0,
-                waterCapacity: 100,
-                level: 1,
-                upgrades: {
-                    hose: 0,
-                    capacity: 0,
-                    speed: 0
-                }
+                water: 100,
+                dnaSequence: ['A', 'T', 'G', 'C', 'A', 'T', 'G', 'C'],
+                dnaOptimized: [false, false, false, false, false, false, false, false],
+                gameActive: true,
+                fireCells: []
             };
             
-            // Set canvas size
-            function resizeCanvas() {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-            }
-            
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-            
-            // Initialize game
+            // Initialize the game
             function initGame() {
-                gameState = {
-                    score: 0,
-                    active: true,
-                    paused: false,
-                    firesExtinguished: 0,
-                    buildingsSaved: 0,
-                    hosePower: 1.0,
-                    waterCapacity: 100,
-                    level: 1,
-                    upgrades: {
-                        hose: 0,
-                        capacity: 0,
-                        speed: 0
+                createGrid();
+                placeBuildings();
+                placeFirefighter();
+                startFires();
+                renderDNASequence();
+                updateStats();
+                
+                // Add event listeners
+                document.querySelectorAll('.tool-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        gameState.selectedTool = this.getAttribute('data-tool');
+                        document.querySelectorAll('.tool-btn').forEach(b => b.style.opacity = '0.7');
+                        this.style.opacity = '1';
+                    });
+                });
+                
+                document.getElementById('extinguishBtn').addEventListener('click', function() {
+                    if (gameState.selectedTool === 'sprinkler') {
+                        placeSprinkler();
+                    } else if (gameState.selectedTool === 'optimize') {
+                        optimizeDNA();
                     }
-                };
+                });
                 
-                updateUI();
-                startBtn.textContent = "Restart Game";
-                pauseBtn.textContent = "Pause";
+                // Start water replenishment
+                setInterval(() => {
+                    if (gameState.water < 100) {
+                        gameState.water = Math.min(100, gameState.water + 1);
+                        updateStats();
+                    }
+                }, 2000);
                 
-                if (window.innerWidth <= 768) {
-                    tutorialModal.style.display = 'block';
-                }
-                
-                gameLoop();
+                // Spread fire occasionally
+                setInterval(() => {
+                    if (gameState.gameActive) {
+                        spreadFire();
+                    }
+                }, 3000);
             }
             
-            // Update UI with game state
-            function updateUI() {
-                scoreElement.textContent = gameState.score;
-                document.getElementById('extinguished').textContent = gameState.firesExtinguished;
-                document.getElementById('saved').textContent = gameState.buildingsSaved;
-                document.getElementById('hose-power').textContent = gameState.hosePower.toFixed(1) + 'x';
-                document.getElementById('water-cap').textContent = Math.max(0, gameState.waterCapacity) + '%';
-            }
-            
-            // Main game loop
-            function gameLoop() {
-                if (!gameState.active || gameState.paused) return;
+            // Create the game grid
+            function createGrid() {
+                const grid = document.getElementById('gameGrid');
+                grid.innerHTML = '';
                 
-                // Clear canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Draw background
-                drawBackground();
-                
-                // Draw buildings with fires
-                drawBuildings();
-                
-                // Draw firefighter
-                drawFirefighter();
-                
-                // Draw water stream
-                drawWater();
-                
-                // Draw UI elements
-                drawUI();
-                
-                // Continue the game loop
-                requestAnimationFrame(gameLoop);
-            }
-            
-            // Draw background with isometric effect
-            function drawBackground() {
-                // Draw sky
-                ctx.fillStyle = '#3498db';
-                ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
-                
-                // Draw ground
-                ctx.fillStyle = '#27ae60';
-                ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
-                
-                // Draw roads (isometric style)
-                ctx.fillStyle = '#7f8c8d';
-                for (let i = 0; i < canvas.width; i += 100) {
-                    ctx.beginPath();
-                    ctx.moveTo(i, canvas.height / 2);
-                    ctx.lineTo(i + 50, canvas.height / 2 + 50);
-                    ctx.lineTo(i, canvas.height);
-                    ctx.lineTo(i - 50, canvas.height / 2 + 50);
-                    ctx.closePath();
-                    ctx.fill();
+                for (let row = 0; row < 5; row++) {
+                    gameState.grid[row] = [];
+                    for (let col = 0; col < 5; col++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.dataset.row = row;
+                        cell.dataset.col = col;
+                        
+                        cell.addEventListener('click', function() {
+                            if (gameState.gameActive) {
+                                handleCellClick(row, col);
+                            }
+                        });
+                        
+                        grid.appendChild(cell);
+                        gameState.grid[row][col] = { type: 'empty', element: cell };
+                    }
                 }
             }
             
-            // Draw buildings with fires
-            function drawBuildings() {
-                // Draw sample buildings
-                const buildings = [
-                    {x: 100, y: 250, width: 80, height: 120, color: '#e74c3c', onFire: true},
-                    {x: 250, y: 300, width: 100, height: 150, color: '#3498db', onFire: false},
-                    {x: 450, y: 280, width: 120, height: 140, color: '#9b59b6', onFire: true},
-                    {x: 650, y: 320, width: 90, height: 130, color: '#f1c40f', onFire: true}
+            // Place buildings on the grid
+            function placeBuildings() {
+                const buildingPositions = [
+                    [0, 1], [0, 3], 
+                    [1, 0], [1, 2], [1, 4],
+                    [3, 0], [3, 2], [3, 4],
+                    [4, 1], [4, 3]
                 ];
                 
-                buildings.forEach(building => {
-                    // Draw building
-                    ctx.fillStyle = building.color;
-                    ctx.fillRect(building.x, building.y, building.width, building.height);
-                    
-                    // Draw windows
-                    ctx.fillStyle = '#ecf0f1';
-                    for (let i = 0; i < 3; i++) {
-                        for (let j = 0; j < 4; j++) {
-                            ctx.fillRect(
-                                building.x + 10 + (i * (building.width - 20) / 3),
-                                building.y + 15 + (j * (building.height - 25) / 4),
-                                (building.width - 40) / 3,
-                                (building.height - 40) / 4
-                            );
-                        }
-                    }
-                    
-                    // Draw roof
-                    ctx.fillStyle = '#34495e';
-                    ctx.beginPath();
-                    ctx.moveTo(building.x - 10, building.y);
-                    ctx.lineTo(building.x + building.width / 2, building.y - 30);
-                    ctx.lineTo(building.x + building.width + 10, building.y);
-                    ctx.closePath();
-                    ctx.fill();
-                    
-                    // Draw fire if building is on fire
-                    if (building.onFire) {
-                        drawFire(building.x + building.width / 2, building.y - 15);
-                    }
+                buildingPositions.forEach(([row, col]) => {
+                    gameState.grid[row][col].type = 'building';
+                    gameState.grid[row][col].element.classList.add('building');
                 });
             }
             
-            // Draw fire animation
-            function drawFire(x, y) {
-                const time = Date.now() * 0.01;
+            // Place the firefighter
+            function placeFirefighter() {
+                const { row, col } = gameState.firefighterPosition;
+                gameState.grid[row][col].type = 'firefighter';
+                gameState.grid[row][col].element.innerHTML = '<div class="firefighter"></div>';
+            }
+            
+            // Start initial fires
+            function startFires() {
+                // Start with 2-3 fires
+                const possibleLocations = [
+                    [0, 1], [0, 3], [1, 0], [4, 1]
+                ];
                 
-                // Draw fire base
-                ctx.fillStyle = 'rgba(255, 69, 0, 0.8)';
-                ctx.beginPath();
-                ctx.arc(x, y, 15 + 2 * Math.sin(time * 0.1), 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Draw middle flame
-                ctx.fillStyle = 'rgba(255, 140, 0, 0.7)';
-                ctx.beginPath();
-                ctx.arc(x, y - 10 + 2 * Math.sin(time * 0.12), 12 + 1.5 * Math.sin(time * 0.15), 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Draw top flame
-                ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
-                ctx.beginPath();
-                ctx.arc(x, y - 20 + 3 * Math.sin(time * 0.14), 9 + Math.sin(time * 0.13), 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Draw sparks
-                ctx.fillStyle = 'rgba(255, 255, 0, 0.7)';
-                for (let i = 0; i < 5; i++) {
-                    const offsetX = 5 * Math.sin(time * 0.05 + i);
-                    const offsetY = 5 * Math.cos(time * 0.05 + i);
-                    ctx.beginPath();
-                    ctx.arc(x + offsetX, y - 25 + offsetY, 3 + Math.sin(time * 0.1 + i) * 2, 0, Math.PI * 2);
-                    ctx.fill();
+                for (let i = 0; i < 3; i++) {
+                    const [row, col] = possibleLocations[i];
+                    setFire(row, col);
                 }
             }
             
-            // Draw firefighter character
-            function drawFirefighter() {
-                const x = canvas.width / 2;
-                const y = canvas.height / 2 + 100;
-                
-                // Draw body
-                ctx.fillStyle = '#e74c3c';
-                ctx.fillRect(x - 15, y - 30, 30, 50);
-                
-                // Draw helmet
-                ctx.fillStyle = '#ff9800';
-                ctx.beginPath();
-                ctx.arc(x, y - 40, 15, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Draw face shield
-                ctx.fillStyle = 'rgba(173, 216, 230, 0.6)';
-                ctx.beginPath();
-                ctx.arc(x, y - 35, 10, 0, Math.PI);
-                ctx.fill();
-                
-                // Draw hose
-                ctx.strokeStyle = '#3498db';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(x + 20, y);
-                ctx.lineTo(x + 60, y - 20);
-                ctx.stroke();
-            }
-            
-            // Draw water stream
-            function drawWater() {
-                const x = canvas.width / 2;
-                const y = canvas.height / 2 + 100;
-                
-                ctx.strokeStyle = 'rgba(30, 144, 255, 0.7)';
-                ctx.lineWidth = 5;
-                ctx.beginPath();
-                ctx.moveTo(x + 60, y - 20);
-                
-                // Draw wavy water stream
-                for (let i = 0; i < 5; i++) {
-                    const offsetX = 10 * Math.sin(Date.now() * 0.005 + i);
-                    const offsetY = 10 * Math.cos(Date.now() * 0.005 + i);
-                    ctx.lineTo(x + 100 + i * 20 + offsetX, y - 50 - i * 15 + offsetY);
-                }
-                
-                ctx.stroke();
-                
-                // Draw water droplets
-                ctx.fillStyle = 'rgba(30, 144, 255, 0.8)';
-                for (let i = 0; i < 10; i++) {
-                    const offsetX = 15 * Math.sin(Date.now() * 0.002 + i);
-                    const offsetY = 15 * Math.cos(Date.now() * 0.002 + i);
-                    ctx.beginPath();
-                    ctx.arc(x + 180 + offsetX, y - 140 + offsetY, 3 + Math.sin(Date.now() * 0.003 + i) * 2, 0, Math.PI * 2);
-                    ctx.fill();
+            // Set fire to a cell
+            function setFire(row, col) {
+                if (gameState.grid[row][col].type === 'building') {
+                    gameState.grid[row][col].type = 'fire';
+                    gameState.grid[row][col].element.classList.add('fire');
+                    gameState.grid[row][col].element.innerHTML = '<div class="fire-smoke"></div>';
+                    gameState.fireCells.push({ row, col });
                 }
             }
             
-            // Draw UI elements on canvas
-            function drawUI() {
-                // Draw water capacity bar
-                const barWidth = 200;
-                const barHeight = 20;
-                const x = canvas.width - barWidth - 20;
-                const y = 20;
+            // Spread fire to adjacent buildings
+            function spreadFire() {
+                const newFires = [];
                 
-                // Background
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.fillRect(x, y, barWidth, barHeight);
+                // Check adjacent cells for each existing fire
+                gameState.fireCells.forEach(({ row, col }) => {
+                    const directions = [
+                        { r: -1, c: 0 }, // up
+                        { r: 1, c: 0 },  // down
+                        { r: 0, c: -1 }, // left
+                        { r: 0, c: 1 }   // right
+                    ];
+                    
+                    directions.forEach(({ r, c }) => {
+                        const newRow = row + r;
+                        const newCol = col + c;
+                        
+                        if (newRow >= 0 && newRow < 5 && newCol >= 0 && newCol < 5) {
+                            if (gameState.grid[newRow][newCol].type === 'building' && 
+                                Math.random() > 0.6) {
+                                newFires.push({ row: newRow, col: newCol });
+                            }
+                        }
+                    });
+                });
                 
-                // Water level
-                ctx.fillStyle = '#3498db';
-                ctx.fillRect(x, y, barWidth * (gameState.waterCapacity / 100), barHeight);
+                // Set new fires
+                newFires.forEach(({ row, col }) => {
+                    setFire(row, col);
+                });
                 
-                // Border
-                ctx.strokeStyle = '#ecf0f1';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(x, y, barWidth, barHeight);
-                
-                // Label
-                ctx.font = '14px Arial';
-                ctx.fillStyle = 'white';
-                ctx.fillText('Water: ' + Math.max(0, gameState.waterCapacity) + '%', x, y - 5);
-                
-                // Draw level indicator
-                ctx.font = '16px Arial';
-                ctx.fillStyle = '#ff9800';
-                ctx.fillText('Level: ' + gameState.level, 20, 30);
-                
-                // Draw hose power indicator
-                ctx.fillText('Hose Power: ' + gameState.hosePower.toFixed(1) + 'x', 20, 60);
+                // Check for game over if fires are too many
+                if (gameState.fireCells.length > 8) {
+                    gameState.gameActive = false;
+                    document.getElementById('gameStatus').textContent = 'Game Over! Too many fires spread.';
+                    document.getElementById('gameStatus').className = 'game-status danger';
+                }
             }
             
-            // Event listeners
-            startBtn.addEventListener('click', initGame);
-            
-            pauseBtn.addEventListener('click', function() {
-                if (!gameState.active) return;
-                
-                gameState.paused = !gameState.paused;
-                pauseBtn.textContent = gameState.paused ? "Resume" : "Pause";
-                
-                if (!gameState.paused) {
-                    gameLoop();
+            // Handle cell click
+            function handleCellClick(row, col) {
+                if (gameState.grid[row][col].type === 'fire') {
+                    extinguishFire(row, col);
                 }
-            });
+            }
             
-            helpBtn.addEventListener('click', function() {
-                tutorialModal.style.display = 'block';
-            });
-            
-            tutorialClose.addEventListener('click', function() {
-                tutorialModal.style.display = 'none';
-            });
-            
-            soundBtn.addEventListener('click', function() {
-                if (soundBtn.textContent.includes('On')) {
-                    soundBtn.textContent = 'Sound: Off';
+            // Extinguish fire
+            function extinguishFire(row, col) {
+                const waterCost = {
+                    'small': 5,
+                    'medium': 10,
+                    'large': 15
+                }[gameState.selectedTool];
+                
+                if (gameState.water >= waterCost) {
+                    // Use water
+                    gameState.water -= waterCost;
+                    
+                    // Add water animation
+                    gameState.grid[row][col].element.innerHTML += '<div class="water-animation"></div>';
+                    
+                    // Extinguish fire after animation
+                    setTimeout(() => {
+                        gameState.grid[row][col].type = 'building';
+                        gameState.grid[row][col].element.classList.remove('fire');
+                        gameState.grid[row][col].element.innerHTML = '';
+                        
+                        // Remove from fire cells
+                        gameState.fireCells = gameState.fireCells.filter(
+                            cell => !(cell.row === row && cell.col === col)
+                        );
+                        
+                        // Increase score
+                        gameState.score += waterCost * 2;
+                        
+                        // Optimize part of DNA
+                        optimizeRandomDNA();
+                        
+                        // Update stats
+                        updateStats();
+                        
+                        // Check for win
+                        checkWinCondition();
+                    }, 500);
                 } else {
-                    soundBtn.textContent = 'Sound: On';
+                    document.getElementById('gameStatus').textContent = 'Not enough water!';
+                    setTimeout(() => {
+                        updateGameStatus();
+                    }, 2000);
                 }
-            });
+            }
             
-            // Upgrade handlers
-            document.querySelectorAll('.upgrade-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    if (!gameState.active) return;
+            // Place sprinkler
+            function placeSprinkler() {
+                if (gameState.water >= 20) {
+                    gameState.water -= 20;
                     
-                    const upgradeType = this.dataset.upgrade;
-                    const cost = parseInt(this.textContent);
+                    // Find all adjacent cells to firefighter and extinguish fires
+                    const { row, col } = gameState.firefighterPosition;
+                    const directions = [
+                        { r: -1, c: 0 }, { r: 1, c: 0 }, { r: 0, c: -1 }, { r: 0, c: 1 }
+                    ];
                     
-                    if (gameState.score >= cost) {
-                        gameState.score -= cost;
+                    directions.forEach(({ r, c }) => {
+                        const newRow = row + r;
+                        const newCol = col + c;
                         
-                        switch(upgradeType) {
-                            case 'hose':
-                                gameState.hosePower += 0.2;
-                                gameState.upgrades.hose++;
-                                break;
-                            case 'capacity':
-                                gameState.waterCapacity += 20;
-                                gameState.upgrades.capacity++;
-                                break;
-                            case 'speed':
-                                // Would affect movement speed if implemented
-                                gameState.upgrades.speed++;
-                                break;
+                        if (newRow >= 0 && newRow < 5 && newCol >= 0 && newCol < 5) {
+                            if (gameState.grid[newRow][newCol].type === 'fire') {
+                                gameState.grid[newRow][newCol].type = 'building';
+                                gameState.grid[newRow][newCol].element.classList.remove('fire');
+                                gameState.grid[newRow][newCol].element.innerHTML = '';
+                                
+                                // Remove from fire cells
+                                gameState.fireCells = gameState.fireCells.filter(
+                                    cell => !(cell.row === newRow && cell.col === newCol)
+                                );
+                            }
                         }
-                        
-                        updateUI();
+                    });
+                    
+                    // Optimize part of DNA
+                    optimizeRandomDNA();
+                    optimizeRandomDNA();
+                    
+                    // Update stats
+                    updateStats();
+                    
+                    // Check for win
+                    checkWinCondition();
+                } else {
+                    document.getElementById('gameStatus').textContent = 'Not enough water for a sprinkler!';
+                    setTimeout(() => {
+                        updateGameStatus();
+                    }, 2000);
+                }
+            }
+            
+            // Optimize DNA directly
+            function optimizeDNA() {
+                if (gameState.water >= 30) {
+                    gameState.water -= 30;
+                    
+                    // Optimize multiple DNA parts
+                    for (let i = 0; i < 3; i++) {
+                        optimizeRandomDNA();
                     }
+                    
+                    // Update stats
+                    updateStats();
+                    
+                    // Check for win
+                    checkWinCondition();
+                } else {
+                    document.getElementById('gameStatus').textContent = 'Not enough water for DNA optimization!';
+                    setTimeout(() => {
+                        updateGameStatus();
+                    }, 2000);
+                }
+            }
+            
+            // Optimize a random part of DNA
+            function optimizeRandomDNA() {
+                const unoptimizedIndices = gameState.dnaOptimized
+                    .map((optimized, index) => optimized ? -1 : index)
+                    .filter(index => index !== -1);
+                
+                if (unoptimizedIndices.length > 0) {
+                    const randomIndex = unoptimizedIndices[Math.floor(Math.random() * unoptimizedIndices.length)];
+                    gameState.dnaOptimized[randomIndex] = true;
+                    renderDNASequence();
+                }
+            }
+            
+            // Render DNA sequence
+            function renderDNASequence() {
+                const dnaSequenceElement = document.getElementById('dnaSequence');
+                const dnaStatusElement = document.getElementById('dnaStatus');
+                
+                dnaSequenceElement.innerHTML = '';
+                dnaStatusElement.innerHTML = '';
+                
+                gameState.dnaSequence.forEach((base, index) => {
+                    const baseElement = document.createElement('div');
+                    baseElement.className = `dna-base ${gameState.dnaOptimized[index] ? 'correct' : ''}`;
+                    baseElement.textContent = base;
+                    baseElement.style.background = gameState.dnaOptimized[index] ? 
+                        'linear-gradient(135deg, #4ecdc4, #44a08d)' : 
+                        'linear-gradient(135deg, #ff6b6b, #ff8e8e)';
+                    
+                    const statusElement = document.createElement('div');
+                    statusElement.className = 'dna-base';
+                    statusElement.innerHTML = gameState.dnaOptimized[index] ? '✓' : '✗';
+                    statusElement.style.background = gameState.dnaOptimized[index] ? 
+                        'linear-gradient(135deg, #4ecdc4, #44a08d)' : 
+                        'linear-gradient(135deg, #ff6b6b, #ff8e8e)';
+                    
+                    dnaSequenceElement.appendChild(baseElement);
+                    dnaStatusElement.appendChild(statusElement);
                 });
-            });
+            }
             
-            // Initial UI update
-            updateUI();
+            // Update game stats
+            function updateStats() {
+                document.getElementById('scoreValue').textContent = gameState.score;
+                document.getElementById('waterValue').textContent = gameState.water;
+                
+                const optimizedCount = gameState.dnaOptimized.filter(opt => opt).length;
+                const totalCount = gameState.dnaOptimized.length;
+                const percentage = Math.round((optimizedCount / totalCount) * 100);
+                
+                document.getElementById('dnaProgress').textContent = `${percentage}%`;
+                updateGameStatus();
+            }
             
-            // Draw initial static scene
-            drawBackground();
-            drawBuildings();
-            drawFirefighter();
-            drawWater();
-            drawUI();
+            // Update game status message
+            function updateGameStatus() {
+                const statusElement = document.getElementById('gameStatus');
+                
+                if (!gameState.gameActive) return;
+                
+                const fireCount = gameState.fireCells.length;
+                
+                if (fireCount === 0) {
+                    statusElement.textContent = 'All fires extinguished! Great job!';
+                    statusElement.className = 'game-status success';
+                } else if (fireCount < 3) {
+                    statusElement.textContent = 'Doing well! Keep extinguishing fires.';
+                    statusElement.className = 'game-status';
+                } else if (fireCount < 6) {
+                    statusElement.textContent = 'Fires are spreading! Focus on containment.';
+                    statusElement.className = 'game-status';
+                } else {
+                    statusElement.textContent = 'Critical! Many fires are burning. Use your tools wisely!';
+                    statusElement.className = 'game-status danger';
+                }
+            }
+            
+            // Check win condition
+            function checkWinCondition() {
+                const allOptimized = gameState.dnaOptimized.every(opt => opt);
+                
+                if (allOptimized) {
+                    gameState.gameActive = false;
+                    document.getElementById('gameStatus').textContent = 'You won! DNA sequence fully optimized.';
+                    document.getElementById('gameStatus').className = 'game-status success';
+                    
+                    // Add bonus points for remaining water
+                    const bonus = gameState.water * 2;
+                    gameState.score += bonus;
+                    updateStats();
+                }
+            }
+            
+            // Initialize the game
+            initGame();
         });
     </script>
 </body>
